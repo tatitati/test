@@ -1,0 +1,30 @@
+version: '2'
+services:    
+    mynginx:
+        image: nginx:latest
+        
+        ports:
+            - 80:80
+        volumes:
+            - ../app:/var/www/app 
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+        links:
+            - myfpm
+            - mydb
+
+    myfpm:
+        image: php:fpm
+        
+        volumes:
+            - ../app:/var/www/app  
+            - ./fpm.conf:/etc/php5/fpm/pool.d/fpm.conf
+
+    mydb:
+      image: postgres
+      environment:
+        POSTGRES_PASSWORD: mydockerpassword
+        POSTGRES_USER: mydockeruser
+        POSTGRES_DB: mydockerdatabase            
+
+# myfpm:
+#     image: php:7-fpm
