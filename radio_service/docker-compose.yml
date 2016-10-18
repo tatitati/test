@@ -1,0 +1,10 @@
+version: '2'
+services:
+    backend:
+      image: richarvey/nginx-php-fpm
+      ports:
+          - 80:80
+      volumes:
+          - ./app:/var/www/app
+          - ./mynginx.conf:/etc/nginx/sites-enabled/nginx.conf
+          - ./nginx_logs:/var/log/nginx
