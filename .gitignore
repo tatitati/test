@@ -1,2 +1,3 @@
-/service/vendor
-/service/app/logs/*
+/radio_service/vendor
+/radio_service/app/logs/*.log
+/radio_service/nginx_logs/*.log
