@@ -2,21 +2,18 @@
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use GuzzleHttp\Client;
 
 $app->get(
-	'/person/{id}', 
+	'/product/{id}',
 	function (Request $request, Response $response) {
-	    $id = $request->getAttribute('id');	    
+		die('im here');
+	    $searchToString = $request->getAttribute('search_to_string');
+		$client = new Client(['base_uri' => 'http://httpbin.org']);
+		$response = $client->request('GET', 'test');
 
-	    $personData = [
-	    	'name'		=>	'francisco jose',
-	    	'surname'	=>	'albert albusac'
-	    ];	     
+		return $response;
 
-	    // fetch from database this user id and return it
-
-	    // return $response;    
-	    return $this->view->render($response, 'person.twig', $personData);
 });
 
 
