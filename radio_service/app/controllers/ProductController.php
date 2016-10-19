@@ -4,16 +4,13 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use GuzzleHttp\Client;
 use Bbc\Radio\Services\BbcRadioService;
+use Slim\App;
 
 
-$app->get(
-	'/product/{search_string}',
-    function () use ($app, $container) {
-        echo '<pre>';
+$app->get('/product/{search_string}',  function ($request, $response) use ($pimpleContainer) {
         /** @var BbcRadioService $serviceBbcRadio */
-		$serviceBbcRadio = $container['service_bbc_radio'];
-        $response = $serviceBbcRadio->searchByString('arse');
-        print_r($response);
-        die();
+        $att = $request->getAttribute('search_string');
 
+		$serviceBbcRadio = $pimpleContainer['service_bbc_radio'];
+        return $serviceBbcRadio->searchByString($att);
 });
