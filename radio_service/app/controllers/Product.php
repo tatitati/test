@@ -5,11 +5,14 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use GuzzleHttp\Client;
 
 $app->get(
-	'/product/{id}',
+	'/product/{search_string}',
 	function (Request $request, Response $response) {
-	    $searchToString = $request->getAttribute('search_to_string');
-		$client = new Client(['base_uri' => 'http://www.google.com']);
-		$response = $client->request('GET', '/');
+		$searchString  = $request->getAttribute('search_string');
+
+		$baseUrl       = 'http://www.bbc.co.uk';
+		$requestUrl    = sprintf('/programmes/a-z/by/%s/current.json', $searchString);
+
+		$response = (new Client(['base_uri' => $baseUrl]))->request('GET', $requestUrl);
 
 		return $response;
 });
