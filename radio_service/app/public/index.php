@@ -1,4 +1,6 @@
 <?php
+use Bbc\Radio\App\Src\CustomSlimApp;
+
 require __DIR__ . "/../vendor/autoload.php";
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
@@ -13,14 +15,17 @@ if (PHP_SAPI == 'cli-server') {
 session_start();
 
 $settings        = require __DIR__ . '/../src/settings.php';
-$app             = new \Slim\App($settings);
-$pimpleContainer = new Pimple\Container();
+$app             = new CustomSlimApp($settings);
 
-require __DIR__ . '/../src/container.php';
+$servicesContainer = new Pimple\Container();
+require __DIR__ . '/../src/servicesContainer.php';
+$app->setServicesContainer($servicesContainer);
+
+
+
 require __DIR__ . '/../src/dependencies.php';
 require __DIR__ . '/../src/middleware.php';
 require __DIR__ . '/../src/routes.php';
-
 
 
 $app->run();
