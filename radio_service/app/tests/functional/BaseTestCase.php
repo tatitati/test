@@ -1,11 +1,16 @@
 <?php
 
-namespace Tests\Functional;
+namespace Bbc\Radio\App\Tests\Functional;
 
+use Bbc\Radio\App\Src\CustomSlimApp;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use Slim\App;
 use Slim\Http\Request;
-use Slim\Http\Response;
+use GuzzleHttp\Psr7\Response;
 use Slim\Http\Environment;
+use Pimple;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -15,12 +20,41 @@ use Slim\Http\Environment;
  */
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
+    /** @var CustomSlimApp */
+    private $app;
+
     /**
      * Use middleware when running application?
      *
      * @var bool
      */
     protected $withMiddleware = true;
+
+    public function setupApp()
+    {
+        // Use the application settings
+        $settings = require __DIR__ . '/../../src/settings.php';
+
+        // Instantiate the application
+        $app = new CustomSlimApp($settings);
+
+        $servicesContainer = new Pimple\Container();
+        require __DIR__ . '/../../src/servicesContainer.php';
+        $app->setServicesContainer($servicesContainer);
+
+        // Set up dependencies
+        require __DIR__ . '/../../src/dependencies.php';
+
+        // Register middleware
+        if ($this->withMiddleware) {
+            require __DIR__ . '/../../src/middleware.php';
+        }
+
+        // Register routes
+        require __DIR__ . '/../../src/routes.php';
+
+        $this->app = $app;
+    }
 
     /**
      * Process the application given a request method and URI
@@ -32,6 +66,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
     {
+        // Process the application
         // Create a mock environment for testing with
         $environment = Environment::mock(
             [
@@ -51,27 +86,34 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         // Set up a response object
         $response = new Response();
 
-        // Use the application settings
-        $settings = require __DIR__ . '/../../src/settings.php';
 
-        // Instantiate the application
-        $app = new App($settings);
-
-        // Set up dependencies
-        require __DIR__ . '/../../src/dependencies.php';
-
-        // Register middleware
-        if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/middleware.php';
-        }
-
-        // Register routes
-        require __DIR__ . '/../../src/routes.php';
-
-        // Process the application
-        $response = $app->process($request, $response);
+        $response = $this->app->process($request, $response);
 
         // Return the response
         return $response;
+    }
+
+    public function mockHttpResponse($code = null, $headers=[], $stringBodyContent)
+    {
+        $fakeResponse = new Response(
+            $code,
+            $headers,
+            $stringBodyContent
+        );
+
+        $mock    = new MockHandler([$fakeResponse]);
+        $handler = HandlerStack::create($mock);
+
+        return new Client(['handler' => $handler]);
+    }
+
+    public function mockServiceInContainer($keyContainer, $mockService)
+    {
+        $servicesContainer = $this->app->getServicesContainer();
+        $servicesContainer[$keyContainer] = function() use ($mockService) {
+            return $mockService;
+        };
+
+        $this->app->setServicesContainer($servicesContainer);
     }
 }
