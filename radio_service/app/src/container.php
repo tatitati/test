@@ -1,5 +1,5 @@
 <?php
-use Bbc\Radio\Services\BbcRadioService;
+use Bbc\Radio\App\Services\BbcRadioService;
 use GuzzleHttp\Client;
 
 $pimpleContainer['guzzle_http_client'] = function () {
