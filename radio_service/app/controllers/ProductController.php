@@ -1,15 +1,13 @@
 <?php
-use Bbc\Radio\App\Services\BbcRadioService;
 
-$app->get('/product/{search_string}',  function ($request, $response) use ($pimpleContainer) {
+$app->get('/product/{search_string}',  function ($request, $response) use ($app) {
         $att = $request->getAttribute('search_string');
-
-        /** @var BbcRadioService $serviceBbcRadio */
-		$serviceBbcRadio = $pimpleContainer['service_bbc_radio'];
+        /** @var ProductService $serviceBbcRadio */
+		$serviceBbcRadio = $app->getServicesContainer()['service_product'];
         $resultsSearch   = $serviceBbcRadio->searchByString($att);
 
         if (null === $resultsSearch) {
-                return 'Not found';
+                return 'no results';
         }
 
         return json_encode($resultsSearch);

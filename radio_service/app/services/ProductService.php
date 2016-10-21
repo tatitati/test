@@ -3,7 +3,7 @@ namespace Bbc\Radio\App\Services;
 
 use GuzzleHttp\Client;
 
-class BbcRadioService
+class ProductService
 {
     const URL_BBC = 'http://www.bbc.co.uk';
 
@@ -25,11 +25,10 @@ class BbcRadioService
     public function searchByString($string)
     {
         $response = $this->guzzleClientHttp
-            ->request(
-                'GET',
-                self::URL_BBC . sprintf('/programmes/a-z/by/%s/current.json', $string)
-            )->getBody()
+            ->get(self::URL_BBC . sprintf('/programmes/a-z/by/%s/current.json', $string))
+            ->getBody()
             ->getContents();
+
 
         // check and return results
         $resultsSearch = json_decode($response, true);
