@@ -1,0 +1,47 @@
+## APIBLUEPRINT RESTFUL DOCUMENTATION
+
+## Service (object)
++ type (string)
++ id (string)
++ key (string)
++ title (string)
+
+
+## Ownership (object)
++ service (Service)
+
+
+## Programme (object)
++ type (string)
++ pid (string)
++ title (string)
++ short_synopsis (string)
++ image: Hello World (string)
++ position: Hello World (string)
++ expected_child_count (string)
++ first_broadcast_date (string)
++ is_available (string)
++ ownership (Ownership)
+
+## Title (object)
++ title (string)
++ slice_title: Hello World (string)
++ letter (string)
++ programme (Programme)
+
+
+## Resultsearch (object)
++ slice (string)
++ search (string)
++ letters (string)
++ page (integer)
++ total (integer)
++ offset (integer)
++ tleo_titles (array[Title])
+
+
+# GET /product/{keyword}
++ Parameters
+    + keyword (string) - keyword to search
++ Response 200 (application/json)
+    + Attributes (array[Product])
