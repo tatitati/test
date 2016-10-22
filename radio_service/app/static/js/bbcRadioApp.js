@@ -7,14 +7,22 @@ bbcRadioApp.controller('bbcProductController', function bbcProductController($sc
     $scope.search_results = false;
 
     $scope.searchByString = function () {
+        $scope.loading = true;
         $http({
             method: 'GET',
             url: '/product/' + $scope.search_string
         }).then(function successCallback(response) {
             $scope.search_results = response.data.atoz.tleo_titles;
-
+            $scope.loading        = false;
         }, function errorCallback(response) {
 
         });
     };
+
+    $scope.$watch('search_string', function(nVal, oVal) {
+        $scope.search_results = false;
+        if (nVal !== oVal) {
+            $scope.searchByString();
+        }
+    });
 });

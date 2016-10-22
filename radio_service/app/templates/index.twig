@@ -31,16 +31,22 @@
         <h1>BBC test</h1>
         <div>Radio & Music</div>
 
-        <input id="search_box" type="text" name="searcher" ng-model="search_string"/>
+        <input
+                id="search_box" type="text" name="searcher"
+                ng-model="search_string" ng-model-options="{debounce: 3000}"/>
         <button type="button" ng-click="searchByString();">Search</button>
 
         <p>
-
-        <div ng-if="search_results.length == 0">
-            No results
-        </div>
-        <div ng-repeat="result in search_results">
-            {{ result.title}}
+        <div>
+            <div ng-show="loading">
+                Loading......
+            </div>
+            <div ng-show="search_results.length == 0 && loading == false" >
+                No results
+            </div>
+            <div ng-repeat="result in search_results">
+                {{ result.title}}
+            </div>
         </div>
     </body>
 </html>
