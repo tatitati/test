@@ -1,9 +1,7 @@
-
-<!DOCTYPE html>
-<html>
+<html ng-app="bbcRadioApp">
     <head>
-        <script src="js/vanilla.js"></script>
-        <script src="js/productSearcher.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/bbcRadioApp.js"></script>
 
         <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
         <style>
@@ -27,13 +25,22 @@
             }
         </style>
     </head>
-    <body>
+
+
+    <body ng-controller="bbcProductController">
         <h1>BBC test</h1>
         <div>Radio & Music</div>
 
-        <input id="search_box" type="text" name="searcher"/>
-        <button type="button">Search</button>
+        <input id="search_box" type="text" name="searcher" ng-model="search_string"/>
+        <button type="button" ng-click="searchByString();">Search</button>
 
-        <div id="results"></div>
+        <p>
+
+        <div ng-if="search_results.length == 0">
+            No results
+        </div>
+        <div ng-repeat="result in search_results">
+            {{ result.title}}
+        </div>
     </body>
 </html>
