@@ -2,14 +2,7 @@
 
 namespace Bbc\Radio\App\Tests\Functional\Controllers;
 
-use Bbc\Radio\App\Services\ProductService;
 use Bbc\Radio\App\Tests\Functional\BaseTestCase;
-use GuzzleHttp\Client;
-use Guzzle\Plugin\Mock\MockPlugin;
-use GuzzleHttp\Handler\MockHandler;
-use Guzzle\Stream\Stream;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\HandlerStack;
 
 class ProductControllerTest extends BaseTestCase
 {
@@ -19,6 +12,9 @@ class ProductControllerTest extends BaseTestCase
         $this->setupApp();
     }
 
+    /**
+     * Test routing for product controller
+     */
     public function testRouteProduct()
     {
         $response = $this->runApp('GET', '/product');
@@ -27,6 +23,9 @@ class ProductControllerTest extends BaseTestCase
         $this->assertContains('ok', (string)$response->getBody());
     }
 
+    /**
+     * Test search product by keywords with no results found
+     */
     public function testProductSearchNoResults()
     {
         $this->mockServiceInContainer(
@@ -44,6 +43,9 @@ class ProductControllerTest extends BaseTestCase
         $this->assertContains('"tleo_titles":[]', (string)$response->getBody());
     }
 
+    /**
+     * Test search product by keywords with results
+     */
     public function testProductSearchWithResults()
     {
         $this->mockServiceInContainer(

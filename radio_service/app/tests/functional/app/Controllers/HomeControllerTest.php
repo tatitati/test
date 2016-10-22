@@ -2,14 +2,7 @@
 
 namespace Bbc\Radio\App\Tests\Functional\Controllers;
 
-use Bbc\Radio\App\Services\ProductService;
 use Bbc\Radio\App\Tests\Functional\BaseTestCase;
-use GuzzleHttp\Client;
-use Guzzle\Plugin\Mock\MockPlugin;
-use GuzzleHttp\Handler\MockHandler;
-use Guzzle\Stream\Stream;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\HandlerStack;
 
 class HomeControllerTest extends BaseTestCase
 {
@@ -19,6 +12,9 @@ class HomeControllerTest extends BaseTestCase
         $this->setupApp();
     }
 
+    /**
+     * Test routing for home controller
+     */
     public function testRouteHome()
     {
         $response = $this->runApp('GET', '/');

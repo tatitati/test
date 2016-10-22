@@ -18,9 +18,11 @@ class ProductService
     }
 
     /**
-     * @param $string
+     * Search list of products by keywords
      *
-     * @return string[]|null
+     * @param $string is the keyword
+     *
+     * @return string is a json string
      */
     public function searchByString($string)
     {
