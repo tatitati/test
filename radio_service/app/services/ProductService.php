@@ -24,20 +24,9 @@ class ProductService
      */
     public function searchByString($string)
     {
-        $response = $this->guzzleClientHttp
+        return $this->guzzleClientHttp
             ->get(self::URL_BBC . sprintf('/programmes/a-z/by/%s/current.json', $string))
             ->getBody()
             ->getContents();
-
-
-        // check and return results
-        $resultsSearch = json_decode($response, true);
-        $foundProducts = isset($resultsSearch['atoz']['tleo_titles']) && !empty($resultsSearch['atoz']['tleo_titles']);
-
-        if (true === $foundProducts) {
-            return $resultsSearch['atoz']['tleo_titles'];
-        }
-
-        return null;
     }
 }

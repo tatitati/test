@@ -19,6 +19,14 @@ class ProductControllerTest extends BaseTestCase
         $this->setupApp();
     }
 
+    public function testRouteProduct()
+    {
+        $response = $this->runApp('GET', '/product');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('ok', (string)$response->getBody());
+    }
+
     public function testProductSearchNoResults()
     {
         $this->mockServiceInContainer(
@@ -33,7 +41,7 @@ class ProductControllerTest extends BaseTestCase
         $response = $this->runApp('GET', '/product/string_with_no_results');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('no results', (string)$response->getBody());
+        $this->assertContains('"tleo_titles":[]', (string)$response->getBody());
     }
 
     public function testProductSearchWithResults()

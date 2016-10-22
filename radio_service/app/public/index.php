@@ -22,9 +22,8 @@ require __DIR__ . '/../src/servicesContainer.php';
 $app->setServicesContainer($servicesContainer);
 
 
-
 require __DIR__ . '/../src/dependencies.php';
-require __DIR__ . '/../src/middleware.php';
+require __DIR__ . '/../src/templates.php';
 require __DIR__ . '/../src/routes.php';
 
 

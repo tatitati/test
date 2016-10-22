@@ -47,7 +47,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // Register middleware
         if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/middleware.php';
+            require __DIR__ . '/../../src/templates.php';
         }
 
         // Register routes
